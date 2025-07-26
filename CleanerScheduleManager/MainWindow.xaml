@@ -1,0 +1,31 @@
+﻿<Window
+    x:Class="CleanerScheduleManager.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="clr-namespace:CleanerScheduleManager.ViewModels"
+    Title="Cleaner Schedule Manager"
+    Height="600"
+    Width="1000">
+
+
+    <DockPanel>
+        <Menu
+            DockPanel.Dock="Top">
+            <MenuItem
+                Header="Cleaners"
+                Command="{Binding NavigateToCleanerCommand}" />
+
+            <MenuItem
+                Header="Clients"
+                Command="{Binding NavigateToClientCommand}" />
+
+            <MenuItem
+                Header="Tasks"
+                Command="{Binding NavigateToTaskCommand}" />
+        </Menu>
+
+        <Frame
+            x:Name="MainFrame"
+            NavigationUIVisibility="Hidden" />
+    </DockPanel>
+</Window>
