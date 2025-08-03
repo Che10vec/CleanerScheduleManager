@@ -23,7 +23,13 @@ namespace CleanerScheduleManager.ViewModels
         public Cleaner? SelectedCleaner
         {
             get => _selectedCleaner;
-            set => SetProperty(ref _selectedCleaner, value);
+            set
+            {
+                if (SetProperty(ref _selectedCleaner, value))
+                {
+                    ((RelayCommand)DeleteCleanerCommand).RaiseCanExecuteChanged();
+                }
+            }
         }
 
         public ICommand AddCleanerCommand { get; }
@@ -34,12 +40,12 @@ namespace CleanerScheduleManager.ViewModels
             _dataService = dataService;
 
             AddCleanerCommand = new RelayCommand(_ => AddCleaner());
-            DeleteCleanerCommand = new RelayCommand(_ => DeleteCleaner(), _ => SelectedCleaner != null);
+            DeleteCleanerCommand = new RelayCommand(_ => DeleteCleaner(), _ => CanDeleteCleaner());
         }
 
         private void AddCleaner()
         {
-            var cleaner = new Cleaner
+            Cleaner cleaner = new Cleaner
             {
                 Id = Cleaners.Count + 1,
                 Name = "New Cleaner",
@@ -52,10 +58,13 @@ namespace CleanerScheduleManager.ViewModels
 
         private void DeleteCleaner()
         {
-            if (SelectedCleaner != null)
-            {
-                Cleaners.Remove(SelectedCleaner);
-            }
+            Cleaners.Remove(SelectedCleaner);
+            SelectedCleaner = null;
+        }
+
+        private bool CanDeleteCleaner()
+        {
+            return SelectedCleaner != null;
         }
     }
 }

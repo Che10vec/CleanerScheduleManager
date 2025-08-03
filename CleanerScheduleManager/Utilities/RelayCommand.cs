@@ -14,7 +14,8 @@ namespace CleanerScheduleManager.Utilities
 
         public RelayCommand(
             Action<object?> execute,
-            Predicate<object?>? canExecute = null)
+            Predicate<object?>? canExecute = null
+            )
         {
             _execute = execute;
             _canExecute = canExecute;
