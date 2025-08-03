@@ -22,7 +22,13 @@ namespace CleanerScheduleManager.ViewModels
         public Client? SelectedClient
         {
             get => _selectedClient;
-            set => SetProperty(ref _selectedClient, value);
+            set
+            {
+                if (SetProperty(ref _selectedClient, value))
+                {
+                    ((RelayCommand)DeleteClientCommand).RaiseCanExecuteChanged();
+                }
+            }
         }
 
         public ICommand AddClientCommand { get; }
@@ -33,7 +39,7 @@ namespace CleanerScheduleManager.ViewModels
             _dataService = dataService;
 
             AddClientCommand = new RelayCommand(_ => AddClient());
-            DeleteClientCommand = new RelayCommand(_ => DeleteClient(), _ => SelectedClient != null);
+            DeleteClientCommand = new RelayCommand(_ => DeleteClient(), _ => CanDeleteClient());
         }
 
         private void AddClient()
@@ -54,7 +60,13 @@ namespace CleanerScheduleManager.ViewModels
             if (SelectedClient != null)
             {
                 Clients.Remove(SelectedClient);
+                SelectedClient = null;
             }
+        }
+
+        private bool CanDeleteClient()
+        {
+            return SelectedClient != null;
         }
     }
 }

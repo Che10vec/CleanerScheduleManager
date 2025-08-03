@@ -22,7 +22,13 @@ namespace CleanerScheduleManager.ViewModels
         public CleaningTask? SelectedTask
         {
             get => _selectedTask;
-            set => SetProperty(ref _selectedTask, value);
+            set
+            {
+                if (SetProperty(ref _selectedTask, value))
+                {
+                    ((RelayCommand)DeleteTaskCommand).RaiseCanExecuteChanged();
+                }
+            }
         }
 
         public ICommand AddTaskCommand { get; }
@@ -33,7 +39,7 @@ namespace CleanerScheduleManager.ViewModels
             _dataService = dataService;
 
             AddTaskCommand = new RelayCommand(_ => AddTask());
-            DeleteTaskCommand = new RelayCommand(_ => DeleteTask(), _ => SelectedTask != null);
+            DeleteTaskCommand = new RelayCommand(_ => DeleteTask(), _ => CanDeleteTask());
         }
 
         private void AddTask()
@@ -41,8 +47,8 @@ namespace CleanerScheduleManager.ViewModels
             var task = new CleaningTask
             {
                 TaskId = Tasks.Count + 1,
-                ClientId = 1, // placeholder
-                CleanerId = 1, // placeholder
+                ClientId = 1,
+                CleanerId = 1,
                 ScheduledDate = DateTime.Today,
                 Duration = TimeSpan.FromHours(2),
                 Status = Models.Enums.TaskStatus.Scheduled,
@@ -56,7 +62,13 @@ namespace CleanerScheduleManager.ViewModels
             if (SelectedTask != null)
             {
                 Tasks.Remove(SelectedTask);
+                SelectedTask = null;
             }
+        }
+
+        private bool CanDeleteTask()
+        {
+            return SelectedTask != null;
         }
     }
 }

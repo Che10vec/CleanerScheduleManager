@@ -20,8 +20,6 @@ namespace CleanerScheduleManager
         public MainWindow(MainViewModel viewModel)
         {
             InitializeComponent();
-            DataContext = viewModel;
-            viewModel.SetFrameReference(MainFrame);
         }
     }
 }
