@@ -48,7 +48,7 @@ namespace CleanerScheduleManager.ViewModels
             {
                 Id = Clients.Count + 1,
                 Name = "New Client",
-                Address = "123 Default St",
+                Address = "123 Default st.",
                 Phone = "000-000-0000"
             };
 

@@ -1,14 +1,12 @@
 ﻿using CleanerScheduleManager.Models;
-using CleanerScheduleManager.Models.Enums;
 using CleanerScheduleManager.Services.Interfaces;
 using CleanerScheduleManager.Utilities;
 using CleanerScheduleManager.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Windows.Input;
+using TaskStatusEnum = CleanerScheduleManager.Models.Enums.TaskStatus;
 
 namespace CleanerScheduleManager.ViewModels
 {
@@ -18,6 +16,8 @@ namespace CleanerScheduleManager.ViewModels
         private CleaningTask? _selectedTask;
 
         public ObservableCollection<CleaningTask> Tasks { get; } = new();
+
+        public IEnumerable<TaskStatusEnum> TaskStatuses { get; } = Enum.GetValues<TaskStatusEnum>();
 
         public CleaningTask? SelectedTask
         {
@@ -51,7 +51,7 @@ namespace CleanerScheduleManager.ViewModels
                 CleanerId = 1,
                 ScheduledDate = DateTime.Today,
                 Duration = TimeSpan.FromHours(2),
-                Status = Models.Enums.TaskStatus.Scheduled,
+                Status = TaskStatusEnum.Scheduled,
             };
 
             Tasks.Add(task);

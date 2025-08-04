@@ -47,9 +47,10 @@
                     <DataGridTextColumn
                         Header="Name"
                         Binding="{Binding Name}" />
-                    <DataGridTextColumn
+                    <DataGridComboBoxColumn
                         Header="Skill Level"
-                        Binding="{Binding SkillLevel}" />
+                        SelectedItemBinding="{Binding SkillLevel}"
+                        ItemsSource="{Binding DataContext.SkillLevels, RelativeSource={RelativeSource AncestorType={x:Type Page}}}" />
                     <DataGridCheckBoxColumn
                         Header="Available"
                         Binding="{Binding IsAvailable}" />

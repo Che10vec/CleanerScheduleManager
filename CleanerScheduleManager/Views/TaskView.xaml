@@ -56,9 +56,18 @@
                     <DataGridTextColumn
                         Header="Duration"
                         Binding="{Binding Duration}" />
-                    <DataGridTextColumn
+                    <DataGridComboBoxColumn
                         Header="Status"
-                        Binding="{Binding Status}" />
+                        SelectedItemBinding="{Binding Status}"
+                        ItemsSource="{
+                            Binding DataContext.TaskStatuses, 
+                            RelativeSource={
+                                RelativeSource AncestorType={
+                                    x:Type DataGrid
+                                }
+                            }
+                        }" 
+                        />
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>

@@ -1,4 +1,5 @@
 ﻿using CleanerScheduleManager.Models;
+using CleanerScheduleManager.Models.Enums;
 using CleanerScheduleManager.Services;
 using CleanerScheduleManager.Services.Interfaces;
 using CleanerScheduleManager.Utilities;
@@ -6,9 +7,6 @@ using CleanerScheduleManager.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace CleanerScheduleManager.ViewModels
@@ -19,6 +17,8 @@ namespace CleanerScheduleManager.ViewModels
         private Cleaner? _selectedCleaner;
 
         public ObservableCollection<Cleaner> Cleaners { get; } = new();
+
+        public IEnumerable<CleanerSkillLevel> SkillLevels { get; } = Enum.GetValues<CleanerSkillLevel>();
 
         public Cleaner? SelectedCleaner
         {
@@ -49,7 +49,7 @@ namespace CleanerScheduleManager.ViewModels
             {
                 Id = Cleaners.Count + 1,
                 Name = "New Cleaner",
-                SkillLevel = Models.Enums.CleanerSkillLevel.Beginner,
+                SkillLevel = CleanerSkillLevel.Beginner,
                 IsAvailable = true
             };
 
