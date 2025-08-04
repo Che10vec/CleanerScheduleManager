@@ -31,6 +31,7 @@ namespace CleanerScheduleManager.DependencyInjection
 
                     // UI
                     services.AddSingleton<MainWindow>();
+                    services.AddSingleton<MainView>();
                     services.AddTransient<CleanerView>();
                     services.AddTransient<ClientView>();
                     services.AddTransient<TaskView>();

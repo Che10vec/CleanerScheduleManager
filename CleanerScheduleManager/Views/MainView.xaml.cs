@@ -18,12 +18,11 @@ namespace CleanerScheduleManager.Views
 {
     public partial class MainView : UserControl
     {
-        public Frame GetFrame() => MainFrame;
-
         public MainView(MainViewModel viewModel)
         {
             InitializeComponent();
             DataContext = viewModel;
+            viewModel.SetFrameReference(MainFrame);
         }
     }
 }

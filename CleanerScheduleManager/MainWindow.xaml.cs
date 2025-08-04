@@ -1,4 +1,5 @@
 ﻿using CleanerScheduleManager.ViewModels;
+using CleanerScheduleManager.Views;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,9 +18,10 @@ namespace CleanerScheduleManager
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow(MainViewModel viewModel)
+        public MainWindow(MainView mainView)
         {
             InitializeComponent();
+            this.Content = mainView;
         }
     }
 }

@@ -7,7 +7,9 @@
 
     <DockPanel>
         <Menu
-            DockPanel.Dock="Top">
+            DockPanel.Dock="Right"
+            VerticalAlignment="Stretch" >
+            
             <MenuItem
                 Header="Cleaners"
                 Command="{Binding NavigateToCleanerCommand}" />
