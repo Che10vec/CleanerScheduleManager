@@ -6,24 +6,30 @@
     Title="CleanerView">
 
     <materialDesign:ColorZone
-        Mode="PrimaryLight">
+        Mode="PrimaryLight"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
         <StackPanel
             Margin="20">
 
             <TextBlock
+                Margin="0 0 0 10"
                 Text="Cleaners"
                 Style="{StaticResource MaterialDesignHeadline5TextBlock}" />
 
             <StackPanel
                 Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                        <Setter Property="Margin" Value="0 0 10 0" />
+                    </Style>
+                </StackPanel.Resources>
                 <Button
                     Content="Add"
-                    Command="{Binding AddCleanerCommand}"
-                    Style="{StaticResource MaterialDesignRaisedButton}" />
+                    Command="{Binding AddCleanerCommand}" />
                 <Button
                     Content="Delete"
-                    Command="{Binding DeleteCleanerCommand}"
-                    Style="{StaticResource MaterialDesignRaisedButton}" />
+                    Command="{Binding DeleteCleanerCommand}" />
             </StackPanel>
 
             <DataGrid

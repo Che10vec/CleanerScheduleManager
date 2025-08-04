@@ -15,15 +15,18 @@
             VerticalAlignment="Stretch">
             <Menu
                 HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Style="{StaticResource MaterialDesignMenu}">
+                VerticalAlignment="Stretch">
                 <Menu.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel
                             Orientation="Vertical" />
                     </ItemsPanelTemplate>
                 </Menu.ItemsPanel>
-                
+                <Menu.Resources>
+                    <Style TargetType="materialDesign:PackIcon">
+                        <Setter Property="Height" Value="32" />
+                    </Style>
+                </Menu.Resources>
                 <MenuItem
                     Header="Cleaners"
                     Command="{Binding NavigateToCleanerCommand}">
@@ -43,9 +46,9 @@
                 <MenuItem
                     Header="Tasks"
                     Command="{Binding NavigateToTaskCommand}">
-                    <MenuItem.Icon>
+                    <MenuItem.Icon >
                         <materialDesign:PackIcon
-                            Kind="ClipboardList" />
+                            Kind="ClipboardList" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
                     </MenuItem.Icon>
                 </MenuItem>
             </Menu>

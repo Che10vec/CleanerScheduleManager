@@ -49,7 +49,7 @@ namespace CleanerScheduleManager.ViewModels
             {
                 Id = Cleaners.Count + 1,
                 Name = "New Cleaner",
-                SkillLevel = "Basic",
+                SkillLevel = Models.Enums.CleanerSkillLevel.Beginner,
                 IsAvailable = true
             };
 

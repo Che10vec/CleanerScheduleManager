@@ -6,24 +6,30 @@
     Title="TaskView">
 
     <materialDesign:ColorZone
-        Mode="PrimaryLight">
+        Mode="PrimaryLight"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
         <StackPanel
             Margin="20">
 
             <TextBlock
                 Text="Cleaning Tasks"
+                Margin="0 0 0 10"
                 Style="{StaticResource MaterialDesignHeadline5TextBlock}" />
 
             <StackPanel
                 Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                        <Setter Property="Margin" Value="0 0 10 0" />
+                    </Style>
+                </StackPanel.Resources>
                 <Button
                     Content="Add"
-                    Command="{Binding AddTaskCommand}"
-                    Style="{StaticResource MaterialDesignRaisedButton}" />
+                    Command="{Binding AddTaskCommand}" />
                 <Button
                     Content="Delete"
-                    Command="{Binding DeleteTaskCommand}"
-                    Style="{StaticResource MaterialDesignRaisedButton}" />
+                    Command="{Binding DeleteTaskCommand}" />
             </StackPanel>
 
             <DataGrid

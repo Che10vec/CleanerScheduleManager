@@ -6,24 +6,30 @@
     Title="ClientView">
 
     <materialDesign:ColorZone
-        Mode="PrimaryLight">
+        Mode="PrimaryLight"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
         <StackPanel
             Margin="20">
 
             <TextBlock
+                Margin="0 0 0 10"
                 Text="Clients"
                 Style="{StaticResource MaterialDesignHeadline5TextBlock}" />
 
             <StackPanel
                 Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                        <Setter Property="Margin" Value="0 0 10 0" />
+                    </Style>
+                </StackPanel.Resources>
                 <Button
                     Content="Add"
-                    Command="{Binding AddClientCommand}"
-                    Style="{StaticResource MaterialDesignRaisedButton}" />
+                    Command="{Binding AddClientCommand}" />
                 <Button
                     Content="Delete"
-                    Command="{Binding DeleteClientCommand}"
-                    Style="{StaticResource MaterialDesignRaisedButton}" />
+                    Command="{Binding DeleteClientCommand}" />
             </StackPanel>
 
             <DataGrid

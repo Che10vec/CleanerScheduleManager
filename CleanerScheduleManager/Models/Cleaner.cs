@@ -1,4 +1,5 @@
 ﻿using CleanerScheduleManager.Models.Base;
+using CleanerScheduleManager.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace CleanerScheduleManager.Models
 {
     public class Cleaner : Person
     {
-        public string SkillLevel { get; set; } = string.Empty;
+        public CleanerSkillLevel SkillLevel { get; set; }
 
         public bool IsAvailable { get; set; }
     }
