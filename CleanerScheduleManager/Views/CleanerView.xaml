@@ -49,8 +49,20 @@
                         Binding="{Binding Name}" />
                     <DataGridComboBoxColumn
                         Header="Skill Level"
-                        SelectedItemBinding="{Binding SkillLevel}"
-                        ItemsSource="{Binding DataContext.SkillLevels, RelativeSource={RelativeSource AncestorType={x:Type Page}}}" />
+                        SelectedItemBinding="{Binding SkillLevel}">
+                        <DataGridComboBoxColumn.ElementStyle>
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                <Setter Property="ItemsSource"
+                                        Value="{Binding DataContext.SkillLevels, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                            </Style>
+                        </DataGridComboBoxColumn.ElementStyle>
+                        <DataGridComboBoxColumn.EditingElementStyle>
+                            <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                <Setter Property="ItemsSource"
+                                        Value="{Binding DataContext.SkillLevels, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" />
+                            </Style>
+                        </DataGridComboBoxColumn.EditingElementStyle>
+                    </DataGridComboBoxColumn>
                     <DataGridCheckBoxColumn
                         Header="Available"
                         Binding="{Binding IsAvailable}" />

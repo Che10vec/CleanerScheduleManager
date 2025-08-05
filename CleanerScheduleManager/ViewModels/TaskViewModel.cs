@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using CleanerScheduleManager.Models.Enums;
 using TaskStatusEnum = CleanerScheduleManager.Models.Enums.TaskStatus;
 
 namespace CleanerScheduleManager.ViewModels
@@ -17,7 +18,7 @@ namespace CleanerScheduleManager.ViewModels
 
         public ObservableCollection<CleaningTask> Tasks { get; } = new();
 
-        public IEnumerable<TaskStatusEnum> TaskStatuses { get; } = Enum.GetValues<TaskStatusEnum>();
+        public IEnumerable<TaskStatusEnum> TaskStatuses { get => Enum.GetValues<TaskStatusEnum>(); }
 
         public CleaningTask? SelectedTask
         {
