@@ -10,13 +10,13 @@ namespace CleanerScheduleManager.Models
     {
         public int TaskId { get; set; }
 
-        public int ClientId { get; set; }
+        public Client? Client { get; set; }
 
-        public int CleanerId { get; set; }
+        public Client? client { get; set; }
 
-        public DateTime ScheduledDate { get; set; }
+        public DateTime? ScheduledDate { get; set; }
 
-        public TimeSpan Duration { get; set; }
+        public TimeSpan? Duration { get; set; }
 
         public Enums.TaskStatus Status { get; set; }
     }
