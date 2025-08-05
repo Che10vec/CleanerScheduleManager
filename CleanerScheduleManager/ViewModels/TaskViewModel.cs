@@ -14,11 +14,15 @@ namespace CleanerScheduleManager.ViewModels
     public class TaskViewModel : ViewModelBase
     {
         private readonly IDataService _dataService;
+        private readonly ClientViewModel _clientViewModel;
+        private readonly CleanerViewModel _cleanerViewModel;
         private CleaningTask? _selectedTask;
 
         public ObservableCollection<CleaningTask> Tasks { get; } = new();
 
         public IEnumerable<TaskStatusEnum> TaskStatuses { get => Enum.GetValues<TaskStatusEnum>(); }
+        public IEnumerable<Client> Clients => _clientViewModel.Clients;
+        public IEnumerable<Cleaner> Cleaners => _cleanerViewModel.Cleaners;
 
         public CleaningTask? SelectedTask
         {
@@ -35,9 +39,11 @@ namespace CleanerScheduleManager.ViewModels
         public ICommand AddTaskCommand { get; }
         public ICommand DeleteTaskCommand { get; }
 
-        public TaskViewModel(IDataService dataService)
+        public TaskViewModel(IDataService dataService, ClientViewModel clientViewModel, CleanerViewModel cleanerViewModel)
         {
             _dataService = dataService;
+            _clientViewModel = clientViewModel;
+            _cleanerViewModel = cleanerViewModel;
 
             AddTaskCommand = new RelayCommand(_ => AddTask());
             DeleteTaskCommand = new RelayCommand(_ => DeleteTask(), _ => CanDeleteTask());
@@ -48,8 +54,6 @@ namespace CleanerScheduleManager.ViewModels
             var task = new CleaningTask
             {
                 TaskId = Tasks.Count + 1,
-                ClientId = 1,
-                CleanerId = 1,
                 ScheduledDate = DateTime.Today,
                 Duration = TimeSpan.FromHours(2),
                 Status = TaskStatusEnum.Scheduled,
