@@ -81,7 +81,7 @@ namespace CleanerScheduleManager.ViewModels
 
         public void FinalizeEdits()
         {
-            var editable = CollectionViewSource.GetDefaultView(Tasks) as IEditableCollectionView;
+            IEditableCollectionView? editable = CollectionViewSource.GetDefaultView(Tasks) as IEditableCollectionView;
             if (editable != null)
             {
                 if (editable.IsAddingNew)

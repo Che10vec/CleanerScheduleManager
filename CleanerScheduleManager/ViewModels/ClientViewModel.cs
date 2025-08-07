@@ -5,14 +5,17 @@ using CleanerScheduleManager.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Input;
+using static CleanerScheduleManager.ViewModels.Base.ViewModelBase;
 
 namespace CleanerScheduleManager.ViewModels
 {
-    public class ClientViewModel : ViewModelBase
+    public class ClientViewModel : ViewModelBase, IHasPendingEdits
     {
         private readonly IDataService _dataService;
         private Client? _selectedClient;
@@ -67,6 +70,18 @@ namespace CleanerScheduleManager.ViewModels
         private bool CanDeleteClient()
         {
             return SelectedClient != null;
+        }
+
+        public void FinalizeEdits()
+        {
+            IEditableCollectionView? editable = CollectionViewSource.GetDefaultView(Clients) as IEditableCollectionView;
+            if (editable != null)
+            {
+                if (editable.IsAddingNew)
+                    editable.CommitNew();
+                if (editable.IsEditingItem)
+                    editable.CommitEdit();
+            }
         }
     }
 }

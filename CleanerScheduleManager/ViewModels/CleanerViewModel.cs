@@ -7,11 +7,15 @@ using CleanerScheduleManager.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Input;
+using static CleanerScheduleManager.ViewModels.Base.ViewModelBase;
 
 namespace CleanerScheduleManager.ViewModels
 {
-    public class CleanerViewModel : ViewModelBase
+    public class CleanerViewModel : ViewModelBase, IHasPendingEdits
     {
         private readonly IDataService _dataService;
         private Cleaner? _selectedCleaner;
@@ -65,6 +69,18 @@ namespace CleanerScheduleManager.ViewModels
         private bool CanDeleteCleaner()
         {
             return SelectedCleaner != null;
+        }
+
+        public void FinalizeEdits()
+        {
+            IEditableCollectionView? editable = CollectionViewSource.GetDefaultView(Cleaners) as IEditableCollectionView;
+            if (editable != null)
+            {
+                if (editable.IsAddingNew)
+                    editable.CommitNew();
+                if (editable.IsEditingItem)
+                    editable.CommitEdit();
+            }
         }
     }
 }
