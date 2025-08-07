@@ -99,6 +99,10 @@ namespace CleanerScheduleManager.ViewModels
             Tasks.Clear();
             foreach (var task in tasks)
             {
+                if (task.Client != null)
+                    task.Client = _clientViewModel.Clients.FirstOrDefault(c => c.Id == task.Client.Id);
+                if (task.Cleaner != null)
+                    task.Cleaner = _cleanerViewModel.Cleaners.FirstOrDefault(c => c.Id == task.Cleaner.Id);
                 Tasks.Add(task);
             }
         }

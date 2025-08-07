@@ -57,6 +57,19 @@
                 Margin="0 10 0 0"
                 CanUserAddRows="False"
                 Style="{StaticResource MaterialDesignDataGrid}">
+                
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow" BasedOn="{StaticResource MaterialDesignDataGridRow}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Status}" Value="Scheduled">
+                                <Setter Property="Background" Value="#FFE0B2" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status}" Value="Completed">
+                                <Setter Property="Background" Value="#C8E6C9" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
 
                 <DataGrid.Columns>
                     <DataGridTextColumn
