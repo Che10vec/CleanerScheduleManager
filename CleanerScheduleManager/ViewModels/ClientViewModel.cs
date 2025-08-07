@@ -2,10 +2,12 @@
 using CleanerScheduleManager.Services.Interfaces;
 using CleanerScheduleManager.Utilities;
 using CleanerScheduleManager.ViewModels.Base;
+using CleanerScheduleManager.ViewModels.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,9 +17,10 @@ using static CleanerScheduleManager.ViewModels.Base.ViewModelBase;
 
 namespace CleanerScheduleManager.ViewModels
 {
-    public class ClientViewModel : ViewModelBase, IHasPendingEdits
+    public class ClientViewModel : ViewModelBase, IHasPendingEdits, IPersistable
     {
         private readonly IDataService _dataService;
+        private readonly string _dataFilePath = Path.Combine(AppContext.BaseDirectory, "clients.json");
         private Client? _selectedClient;
 
         public ObservableCollection<Client> Clients { get; } = new();
@@ -82,6 +85,21 @@ namespace CleanerScheduleManager.ViewModels
                 if (editable.IsEditingItem)
                     editable.CommitEdit();
             }
+        }
+        public async Task LoadDataAsync()
+        {
+            Clients.Clear();
+            var clients = await _dataService.LoadAsync<Client>(_dataFilePath);
+            foreach (var client in clients)
+            {
+                Clients.Add(client);
+            }
+        }
+
+        public Task SaveDataAsync()
+        {
+            FinalizeEdits();
+            return _dataService.SaveAsync(Clients, _dataFilePath);
         }
     }
 }

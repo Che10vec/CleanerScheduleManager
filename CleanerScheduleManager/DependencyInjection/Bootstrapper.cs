@@ -1,6 +1,7 @@
 ﻿using CleanerScheduleManager.Services;
 using CleanerScheduleManager.Services.Interfaces;
 using CleanerScheduleManager.ViewModels;
+using CleanerScheduleManager.ViewModels.Interfaces;
 using CleanerScheduleManager.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,9 +26,9 @@ namespace CleanerScheduleManager.DependencyInjection
 
                     // ViewModels
                     services.AddSingleton<MainViewModel>();
-                    services.AddSingleton<CleanerViewModel>();
-                    services.AddSingleton<ClientViewModel>();
-                    services.AddSingleton<TaskViewModel>();
+                    services.AddPersistableViewModel<CleanerViewModel>();
+                    services.AddPersistableViewModel<ClientViewModel>();
+                    services.AddPersistableViewModel<TaskViewModel>();
 
                     // UI
                     services.AddSingleton<MainWindow>();
@@ -36,5 +37,12 @@ namespace CleanerScheduleManager.DependencyInjection
                     services.AddTransient<ClientView>();
                     services.AddTransient<TaskView>();
                 });
+        public static IServiceCollection AddPersistableViewModel<T>(this IServiceCollection services)
+            where T : class, IPersistable
+        {
+            services.AddSingleton<T>();
+            services.AddSingleton<IPersistable>(sp => sp.GetRequiredService<T>());
+            return services;
+        }
     }
 }

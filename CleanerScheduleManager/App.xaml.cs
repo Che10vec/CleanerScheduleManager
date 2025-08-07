@@ -1,4 +1,6 @@
 ﻿using CleanerScheduleManager.DependencyInjection;
+using CleanerScheduleManager.ViewModels;
+using CleanerScheduleManager.ViewModels.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Configuration;
@@ -10,6 +12,7 @@ namespace CleanerScheduleManager
     public partial class App : Application
     {
         public static IHost AppHost { get; private set; }
+        private List<IPersistable> _persistableViewModels = new();
 
         public App()
         {
@@ -22,6 +25,16 @@ namespace CleanerScheduleManager
         {
             await AppHost.StartAsync();
 
+            _persistableViewModels = AppHost.Services
+                .GetServices<IPersistable>()
+                .OrderBy(vm => vm is TaskViewModel ? 1 : 0)
+                .ToList();
+
+            foreach (var vm in _persistableViewModels)
+            {
+                await vm.LoadDataAsync();
+            }
+
             var mainWindow = AppHost
                 .Services
                 .GetRequiredService<MainWindow>();
@@ -33,6 +46,11 @@ namespace CleanerScheduleManager
 
         protected override async void OnExit(ExitEventArgs e)
         {
+            foreach (var vm in _persistableViewModels)
+            {
+                await vm.SaveDataAsync();
+            }
+
             await AppHost.StopAsync();
             base.OnExit(e);
         }

@@ -25,11 +25,29 @@
                     </Style>
                 </StackPanel.Resources>
                 <Button
-                    Content="Add"
-                    Command="{Binding AddTaskCommand}" />
+                    Command="{Binding AddTaskCommand}">
+                    <StackPanel
+                        Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Kind="Plus"
+                            Margin="0 0 4 0"
+                            VerticalAlignment="Center" />
+                        <TextBlock
+                            Text="Add" />
+                    </StackPanel>
+                </Button>
                 <Button
-                    Content="Delete"
-                    Command="{Binding DeleteTaskCommand}" />
+                    Command="{Binding DeleteTaskCommand}">
+                    <StackPanel
+                        Orientation="Horizontal">
+                        <materialDesign:PackIcon
+                            Kind="Delete"
+                            Margin="0 0 4 0" 
+                            VerticalAlignment="Center" />
+                        <TextBlock
+                            Text="Delete" />
+                    </StackPanel>
+                </Button>
             </StackPanel>
 
             <DataGrid

@@ -38,6 +38,7 @@ namespace CleanerScheduleManager.ViewModels
         public void SetFrameReference(Frame frame)
         {
             _navigationService.SetFrame(frame);
+            _navigationService.NavigateTo<TaskView>();
         }
     }
 }

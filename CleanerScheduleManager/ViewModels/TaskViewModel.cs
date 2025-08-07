@@ -3,10 +3,12 @@ using CleanerScheduleManager.Models.Enums;
 using CleanerScheduleManager.Services.Interfaces;
 using CleanerScheduleManager.Utilities;
 using CleanerScheduleManager.ViewModels.Base;
+using CleanerScheduleManager.ViewModels.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Windows.Data;
 using System.Windows.Input;
 using static CleanerScheduleManager.ViewModels.Base.ViewModelBase;
@@ -14,9 +16,10 @@ using TaskStatusEnum = CleanerScheduleManager.Models.Enums.TaskStatus;
 
 namespace CleanerScheduleManager.ViewModels
 {
-    public class TaskViewModel : ViewModelBase, IHasPendingEdits
+    public class TaskViewModel : ViewModelBase, IHasPendingEdits, IPersistable
     {
         private readonly IDataService _dataService;
+        private readonly string _dataFilePath = Path.Combine(AppContext.BaseDirectory, "tasks.json");
         private readonly ClientViewModel _clientViewModel;
         private readonly CleanerViewModel _cleanerViewModel;
         private CleaningTask? _selectedTask;
@@ -89,6 +92,21 @@ namespace CleanerScheduleManager.ViewModels
                 if (editable.IsEditingItem)
                     editable.CommitEdit();
             }
+        }
+        public async Task LoadDataAsync()
+        {
+            var tasks = await _dataService.LoadAsync<CleaningTask>(_dataFilePath);
+            Tasks.Clear();
+            foreach (var task in tasks)
+            {
+                Tasks.Add(task);
+            }
+        }
+
+        public Task SaveDataAsync()
+        {
+            FinalizeEdits();
+            return _dataService.SaveAsync(Tasks, _dataFilePath);
         }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CleanerScheduleManager.ViewModels.Base
 {
-    public abstract class ViewModelBase : INotifyPropertyChanged
+    public abstract partial class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -33,11 +33,6 @@ namespace CleanerScheduleManager.ViewModels.Base
             storage = value;
             OnPropertyChanged(propertyName);
             return true;
-        }
-
-        public interface IHasPendingEdits
-        {
-            void FinalizeEdits();
         }
     }
 }
