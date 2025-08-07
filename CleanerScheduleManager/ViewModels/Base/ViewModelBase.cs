@@ -34,5 +34,10 @@ namespace CleanerScheduleManager.ViewModels.Base
             OnPropertyChanged(propertyName);
             return true;
         }
+
+        public interface IHasPendingEdits
+        {
+            void FinalizeEdits();
+        }
     }
 }

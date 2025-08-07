@@ -1,11 +1,12 @@
-﻿using CleanerScheduleManager.Views;
+﻿using CleanerScheduleManager.Services.Interfaces;
+using CleanerScheduleManager.Views;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using Microsoft.Extensions.DependencyInjection;
-using CleanerScheduleManager.Services.Interfaces;
+using static CleanerScheduleManager.ViewModels.Base.ViewModelBase;
 
 namespace CleanerScheduleManager.Services
 {
@@ -25,6 +26,10 @@ namespace CleanerScheduleManager.Services
         {
             if (_frame != null)
             {
+                if (_frame.Content is Page currentPage && currentPage.DataContext is IHasPendingEdits pendingEdits)
+                {
+                    pendingEdits.FinalizeEdits();
+                }
                 var page = _serviceProvider.GetRequiredService<T>();
                 _frame.Navigate(page);
             }

@@ -1,17 +1,20 @@
 ﻿using CleanerScheduleManager.Models;
+using CleanerScheduleManager.Models.Enums;
 using CleanerScheduleManager.Services.Interfaces;
 using CleanerScheduleManager.Utilities;
 using CleanerScheduleManager.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Data;
 using System.Windows.Input;
-using CleanerScheduleManager.Models.Enums;
+using static CleanerScheduleManager.ViewModels.Base.ViewModelBase;
 using TaskStatusEnum = CleanerScheduleManager.Models.Enums.TaskStatus;
 
 namespace CleanerScheduleManager.ViewModels
 {
-    public class TaskViewModel : ViewModelBase
+    public class TaskViewModel : ViewModelBase, IHasPendingEdits
     {
         private readonly IDataService _dataService;
         private readonly ClientViewModel _clientViewModel;
@@ -74,6 +77,18 @@ namespace CleanerScheduleManager.ViewModels
         private bool CanDeleteTask()
         {
             return SelectedTask != null;
+        }
+
+        public void FinalizeEdits()
+        {
+            var editable = CollectionViewSource.GetDefaultView(Tasks) as IEditableCollectionView;
+            if (editable != null)
+            {
+                if (editable.IsAddingNew)
+                    editable.CommitNew();
+                if (editable.IsEditingItem)
+                    editable.CommitEdit();
+            }
         }
     }
 }

@@ -46,7 +46,7 @@
                         Binding="{Binding TaskId}" />
                     <DataGridComboBoxColumn
                         Header="Client"
-                        SelectedValueBinding="{Binding ClientId}"
+                        SelectedValueBinding="{Binding ClientId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         DisplayMemberPath="Name"
                         SelectedValuePath="Id">
                         <DataGridComboBoxColumn.ElementStyle>
@@ -64,7 +64,7 @@
                     </DataGridComboBoxColumn>
                     <DataGridComboBoxColumn
                         Header="Cleaner"
-                        SelectedValueBinding="{Binding CleanerId}"
+                        SelectedValueBinding="{Binding CleanerId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         DisplayMemberPath="Name"
                         SelectedValuePath="Id">
                         <DataGridComboBoxColumn.ElementStyle>
@@ -88,7 +88,7 @@
                         Binding="{Binding Duration}" />
                     <DataGridComboBoxColumn
                         Header="Status"
-                        SelectedItemBinding="{Binding Status}">
+                        SelectedItemBinding="{Binding Status, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <DataGridComboBoxColumn.ElementStyle>
                             <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
                                 <Setter Property="ItemsSource"
