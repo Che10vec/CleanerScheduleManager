@@ -12,7 +12,7 @@ namespace CleanerScheduleManager.Models
 
         public Client? Client { get; set; }
 
-        public Client? client { get; set; }
+        public Cleaner? Cleaner { get; set; }
 
         public DateTime? ScheduledDate { get; set; }
 

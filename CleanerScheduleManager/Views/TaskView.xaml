@@ -46,7 +46,7 @@
                         Binding="{Binding TaskId}" />
                     <DataGridComboBoxColumn
                         Header="Client"
-                        SelectedValueBinding="{Binding ClientId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedValueBinding="{Binding Client, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         DisplayMemberPath="Name"
                         SelectedValuePath="Id">
                         <DataGridComboBoxColumn.ElementStyle>
@@ -64,7 +64,7 @@
                     </DataGridComboBoxColumn>
                     <DataGridComboBoxColumn
                         Header="Cleaner"
-                        SelectedValueBinding="{Binding CleanerId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedValueBinding="{Binding Cleaner, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         DisplayMemberPath="Name"
                         SelectedValuePath="Id">
                         <DataGridComboBoxColumn.ElementStyle>
