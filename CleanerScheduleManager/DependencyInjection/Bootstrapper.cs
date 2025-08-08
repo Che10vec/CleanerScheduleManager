@@ -41,7 +41,17 @@ namespace CleanerScheduleManager.DependencyInjection
             where T : class, IPersistable
         {
             services.AddSingleton<T>();
-            services.AddSingleton<IPersistable>(sp => sp.GetRequiredService<T>());
+            services.AddSingleton<IPersistable>(sp =>
+            {
+                try
+                {
+                    return sp.GetRequiredService<T>();
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException($"Failed to resolve view model '{typeof(T).Name}'", ex);
+                }
+            });
             return services;
         }
     }

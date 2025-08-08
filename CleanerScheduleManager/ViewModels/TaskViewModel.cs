@@ -4,6 +4,7 @@ using CleanerScheduleManager.Services.Interfaces;
 using CleanerScheduleManager.Utilities;
 using CleanerScheduleManager.ViewModels.Base;
 using CleanerScheduleManager.ViewModels.Interfaces;
+using CleanerScheduleManager.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -22,10 +23,11 @@ namespace CleanerScheduleManager.ViewModels
         private readonly string _dataFilePath = Path.Combine(AppContext.BaseDirectory, "tasks.json");
         private readonly ClientViewModel _clientViewModel;
         private readonly CleanerViewModel _cleanerViewModel;
+        private string _searchText = string.Empty;
         private CleaningTask? _selectedTask;
 
         public ObservableCollection<CleaningTask> Tasks { get; } = new();
-
+        public ICollectionView TasksView { get; }
         public IEnumerable<TaskStatusEnum> TaskStatuses { get => Enum.GetValues<TaskStatusEnum>(); }
         public IEnumerable<Client> Clients => _clientViewModel.Clients;
         public IEnumerable<Cleaner> Cleaners => _cleanerViewModel.Cleaners;
@@ -41,6 +43,17 @@ namespace CleanerScheduleManager.ViewModels
                 }
             }
         }
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                if (SetProperty(ref _searchText, value))
+                {
+                    TasksView.Refresh();
+                }
+            }
+        }
 
         public ICommand AddTaskCommand { get; }
         public ICommand DeleteTaskCommand { get; }
@@ -50,7 +63,8 @@ namespace CleanerScheduleManager.ViewModels
             _dataService = dataService;
             _clientViewModel = clientViewModel;
             _cleanerViewModel = cleanerViewModel;
-
+            TasksView = CollectionViewSource.GetDefaultView(Tasks);
+            TasksView.Filter = FilterTasks;
             AddTaskCommand = new RelayCommand(_ => AddTask());
             DeleteTaskCommand = new RelayCommand(_ => DeleteTask(), _ => CanDeleteTask());
         }
@@ -111,6 +125,20 @@ namespace CleanerScheduleManager.ViewModels
         {
             FinalizeEdits();
             return _dataService.SaveAsync(Tasks, _dataFilePath);
+        }
+        private bool FilterTasks(object obj)
+        {
+            if (obj is not CleaningTask task)
+                return false;
+
+            if (string.IsNullOrWhiteSpace(SearchText))
+                return true;
+
+            string search = SearchText.ToLowerInvariant();
+            string client = task.Client == null ? string.Empty : $"{task.Client.Id} {task.Client.Name} {task.Client.Address} {task.Client.Phone} ";
+            string cleaner = task.Cleaner == null ? string.Empty : $"{task.Cleaner.Id} {task.Cleaner.Name} {task.Cleaner.SkillLevel} {task.Cleaner.IsAvailable} ";
+            string combined = ($"{task.TaskId} {task.ScheduledDate} {task.Duration} {task.Status} {client}{cleaner}").ToLowerInvariant();
+            return combined.Contains(search);
         }
     }
 }

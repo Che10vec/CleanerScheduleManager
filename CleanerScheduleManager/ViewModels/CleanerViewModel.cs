@@ -5,6 +5,7 @@ using CleanerScheduleManager.Services.Interfaces;
 using CleanerScheduleManager.Utilities;
 using CleanerScheduleManager.ViewModels.Base;
 using CleanerScheduleManager.ViewModels.Interfaces;
+using CleanerScheduleManager.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,11 +22,12 @@ namespace CleanerScheduleManager.ViewModels
     {
         private readonly IDataService _dataService;
         private readonly string _dataFilePath = Path.Combine(AppContext.BaseDirectory, "cleaners.json");
+        private string _searchText = string.Empty;
         private Cleaner? _selectedCleaner;
-
         public ObservableCollection<Cleaner> Cleaners { get; } = new();
 
         public IEnumerable<CleanerSkillLevel> SkillLevels { get; } = Enum.GetValues<CleanerSkillLevel>();
+        public ICollectionView CleanersView { get; }
 
         public Cleaner? SelectedCleaner
         {
@@ -38,6 +40,17 @@ namespace CleanerScheduleManager.ViewModels
                 }
             }
         }
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                if (SetProperty(ref _searchText, value))
+                {
+                    CleanersView.Refresh();
+                }
+            }
+        }
 
         public ICommand AddCleanerCommand { get; }
         public ICommand DeleteCleanerCommand { get; }
@@ -45,6 +58,9 @@ namespace CleanerScheduleManager.ViewModels
         public CleanerViewModel(IDataService dataService)
         {
             _dataService = dataService;
+
+            CleanersView = CollectionViewSource.GetDefaultView(Cleaners);
+            CleanersView.Filter = FilterCleaners;
 
             AddCleanerCommand = new RelayCommand(_ => AddCleaner());
             DeleteCleanerCommand = new RelayCommand(_ => DeleteCleaner(), _ => CanDeleteCleaner());
@@ -100,6 +116,19 @@ namespace CleanerScheduleManager.ViewModels
         {
             FinalizeEdits();
             return _dataService.SaveAsync(Cleaners, _dataFilePath);
+        }
+
+        private bool FilterCleaners(object obj)
+        {
+            if (obj is not Cleaner cleaner)
+                return false;
+
+            if (string.IsNullOrWhiteSpace(SearchText))
+                return true;
+
+            string search = SearchText.ToLowerInvariant();
+            string combined = ($"{cleaner.Id} {cleaner.Name} {cleaner.SkillLevel} {cleaner.IsAvailable}").ToLowerInvariant();
+            return combined.Contains(search);
         }
     }
 }

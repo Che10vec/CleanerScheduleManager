@@ -17,38 +17,62 @@
                 Text="Cleaners"
                 Style="{StaticResource MaterialDesignHeadline5TextBlock}" />
 
-            <StackPanel
-                Orientation="Horizontal">
-                <StackPanel.Resources>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Grid.Resources>
                     <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
                         <Setter Property="Margin" Value="0 0 10 0" />
                     </Style>
-                </StackPanel.Resources>
-                <Button
-                    Command="{Binding AddCleanerCommand}">
-                    <StackPanel
-                        Orientation="Horizontal">
-                        <materialDesign:PackIcon
-                            Kind="Plus"
-                            Margin="0 0 4 0"
-                            VerticalAlignment="Center" />
-                        <TextBlock
-                            Text="Add" />
-                    </StackPanel>
-                </Button>
-                <Button
-                    Command="{Binding DeleteCleanerCommand}">
-                    <StackPanel
-                        Orientation="Horizontal">
-                        <materialDesign:PackIcon
-                            Kind="Delete"
-                            Margin="0 0 4 0" 
-                            VerticalAlignment="Center" />
-                        <TextBlock
-                            Text="Delete" />
-                    </StackPanel>
-                </Button>
-            </StackPanel>
+                </Grid.Resources>
+
+                <StackPanel
+                    Orientation="Horizontal">
+                    <Button
+                        Command="{Binding AddCleanerCommand}">
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Kind="Plus"
+                                Margin="0 0 4 0"
+                                VerticalAlignment="Center" />
+                            <TextBlock
+                                Text="Add" />
+                        </StackPanel>
+                    </Button>
+                    <Button
+                        Command="{Binding DeleteCleanerCommand}">
+                        <StackPanel
+                            Orientation="Horizontal">
+                            <materialDesign:PackIcon
+                                Kind="Delete"
+                                Margin="0 0 4 0"
+                                VerticalAlignment="Center" />
+                            <TextBlock
+                                Text="Delete" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+                <materialDesign:Chip
+                    Grid.Column="1"
+                    Content="{Binding Cleaners.Count, StringFormat='Total Cleaners: {0}'}"
+                    IsEnabled="False"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center" />
+            </Grid>
+
+            <TextBox
+                Margin="0 10 0 0"
+                Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                materialDesign:HintAssist.Hint="Search"
+                materialDesign:TextFieldAssist.HasLeadingIcon="True"
+                materialDesign:TextFieldAssist.LeadingIcon="Magnify"
+                Style="{StaticResource MaterialDesignFilledTextBox}"
+                Background="White"
+                Opacity="0.7"/>
 
             <DataGrid
                 ItemsSource="{Binding Cleaners}"

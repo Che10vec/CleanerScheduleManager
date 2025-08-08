@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Windows;
 
 namespace CleanerScheduleManager
@@ -23,35 +24,78 @@ namespace CleanerScheduleManager
 
         protected override async void OnStartup(StartupEventArgs e)
         {
-            await AppHost.StartAsync();
-
-            _persistableViewModels = AppHost.Services
-                .GetServices<IPersistable>()
-                .OrderBy(vm => vm is TaskViewModel ? 1 : 0)
-                .ToList();
-
-            foreach (var vm in _persistableViewModels)
+            try
             {
-                await vm.LoadDataAsync();
+                await AppHost.StartAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to start application host", ex);
             }
 
-            var mainWindow = AppHost
-                .Services
-                .GetRequiredService<MainWindow>();
+            try
+            {
+                _persistableViewModels = AppHost.Services
+                    .GetServices<IPersistable>()
+                    .OrderBy(vm => vm is TaskViewModel ? 1 : 0)
+                    .ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to resolve view models", ex);
+            }
 
-            mainWindow.Show();
+            try
+            {
+                foreach (var vm in _persistableViewModels)
+                {
+                    await vm.LoadDataAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new IOException("Failed to load application data", ex);
+            }
+
+            try
+            {
+                var mainWindow = AppHost
+                    .Services
+                    .GetRequiredService<MainWindow>();
+
+                mainWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to initialize main window", ex);
+            }
 
             base.OnStartup(e);
         }
 
         protected override async void OnExit(ExitEventArgs e)
         {
-            foreach (var vm in _persistableViewModels)
+            try
             {
-                await vm.SaveDataAsync();
+                foreach (var vm in _persistableViewModels)
+                {
+                    await vm.SaveDataAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new IOException("Failed to save application data", ex);
             }
 
-            await AppHost.StopAsync();
+            try
+            {
+                await AppHost.StopAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to stop application host", ex);
+            }
+
             base.OnExit(e);
         }
     }

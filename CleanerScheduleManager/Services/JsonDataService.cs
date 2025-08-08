@@ -19,19 +19,33 @@ namespace CleanerScheduleManager.Services
 
         public async Task<List<T>> LoadAsync<T>(string path)
         {
-            if (!File.Exists(path))
-                return new List<T>();
+            try
+            {
+                if (!File.Exists(path))
+                    return new List<T>();
 
-            using var stream = File.OpenRead(path);
-            var data = await JsonSerializer.DeserializeAsync<List<T>>(stream, _options);
+                using var stream = File.OpenRead(path);
+                var data = await JsonSerializer.DeserializeAsync<List<T>>(stream, _options);
 
-            return data ?? new List<T>();
+                return data ?? new List<T>();
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Failed to load data from '{path}'", ex);
+            }
         }
 
         public async Task SaveAsync<T>(IEnumerable<T> items, string path)
         {
-            using var stream = File.Create(path);
-            await JsonSerializer.SerializeAsync(stream, items, _options);
+            try
+            {
+                using var stream = File.Create(path);
+                await JsonSerializer.SerializeAsync(stream, items, _options);
+            }
+            catch (Exception ex)
+            {
+                throw new IOException($"Failed to save data to '{path}'", ex);
+            }
         }
     }
 }
