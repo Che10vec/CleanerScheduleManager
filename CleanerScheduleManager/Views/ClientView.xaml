@@ -58,7 +58,7 @@
 
                 <materialDesign:Chip
         Grid.Column="1"
-        Content="{Binding Clients.Count, StringFormat='Total Cleaners: {0}'}"
+        Content="{Binding ClientsView.Count, StringFormat='Total Cleaners: {0}'}"
         IsEnabled="False"
         HorizontalAlignment="Right"
         VerticalAlignment="Center" />

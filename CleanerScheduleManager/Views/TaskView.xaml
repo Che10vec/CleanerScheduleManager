@@ -58,7 +58,7 @@
 
                 <materialDesign:Chip
         Grid.Column="1"
-        Content="{Binding Tasks.Count, StringFormat='Total Tasks: {0}'}"
+        Content="{Binding TasksView.Count, StringFormat='Total Tasks: {0}'}"
         IsEnabled="False"
         HorizontalAlignment="Right"
         VerticalAlignment="Center" />
